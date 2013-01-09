@@ -35,12 +35,13 @@ The library also supports photoshop like layer blending modes:
 
 Sample code in C#:
 -------------------
+```c#
 effects effects = new effects(); //contains all the basic effects 
 layers layers = new layers(); //photoshop like layer implementation
 
 BitmapW a = new BitmapW("D:\megan.jpg"); //load an image
 a = effects.sepia(a); //apply the effect
 pictureBox1.Image = a.GetBitmap(); //show the resulting image
-
+```
 
 =====================================
