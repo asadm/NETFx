@@ -21,6 +21,7 @@ Following effects have been implemented:
 - Posterize
 - Invert
 - Alpha
+- Vignette [NEW]
 
 The library also supports photoshop like layer blending modes:
 - Multiply
