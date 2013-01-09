@@ -115,6 +115,7 @@ pictureBox1.Image = a.GetBitmap(); //show the resulting image
 ```
 
 a more complex sample:
+
 ```c#
 BitmapW a = new BitmapW(openFileDialog1.FileName); //load a bitmap
 
