@@ -23,10 +23,12 @@ namespace filtrr2_port
             h = Math.Min(bottom.Height(), top.Height()),
             w = Math.Min(bottom.Width(), top.Width());
 
-            for (i = 0; i < w; i++) {
-                for (j = 0; j < h; j++) {                
+            for (i = 0; i < w; i++)
+            {
+                for (j = 0; j < h; j++)
+                {
                     // Execute blend on each pixel.
-                    bottom.SetPixel (i,j,func(fn, bottom.GetPixel(i,j), top.GetPixel(i,j)));
+                    bottom.SetPixel(i, j, func(fn, bottom.GetPixel(i, j), top.GetPixel(i, j)));
                 }
             }
             return bottom;
@@ -34,13 +36,13 @@ namespace filtrr2_port
 
         Color func(string fn, Color b, Color t)
         {
-            int cr=0, cg=0, cb=0;
+            int cr = 0, cg = 0, cb = 0;
             //check which function to apply and apply it
             if (fn == "multiply")
             {
                 cr = (t.R * b.R) / 255;
                 cg = (t.G * b.G) / 255;
-                cb = (t.B * b.B) / 255;    
+                cb = (t.B * b.B) / 255;
             }
             if (fn == "screen")
             {
@@ -87,19 +89,33 @@ namespace filtrr2_port
         }
 
         int coverlay(int b, int t) { return (b > 128) ? 255 - 2 * (255 - t) * (255 - b) / 255 : (b * t * 2) / 255; }
-        int csoftLight(float b, float t) 
-        { 
-            b /= 255; 
+        int csoftLight(float b, float t)
+        {
+            b /= 255;
             t /= 255;
-            return (int)((t < 0.5) ? 255*((1-2*t)*b*b + 2*t*b) : 255*((1-(2*t-1))*b+(2*t-1)*(Math.Pow(b, 0.5))));
+            return (int)((t < 0.5) ? 255 * ((1 - 2 * t) * b * b + 2 * t * b) : 255 * ((1 - (2 * t - 1)) * b + (2 * t - 1) * (Math.Pow(b, 0.5))));
         }
 
 
-        // Merges two layers. Takes a ```type``` parameter and 
-        // a bottom and top layer. The ```type``` parameter specifies
-        // the blending mode.
+        /// <summary>
+        ///  Merges two layers. Takes a 'type' parameter and 
+        /// a bottom and top layer. The 'type' parameter specifies
+        /// the blending mode. type options are:
+        ///- multiply
+        ///- screen
+        ///- overlay
+        ///- softLight
+        ///- addition
+        ///- exclusion
+        ///- difference
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="bottom"></param>
+        /// <param name="top"></param>
+        /// <returns></returns>
         public BitmapW merge(string type, BitmapW bottom, BitmapW top)
         {
+
             return apply(bottom, top, type);
         }
 

@@ -27,7 +27,7 @@ namespace filtrr2_port
             if (openFileDialog1.FileName == "") 
             { MessageBox.Show("Select an image first");  return; }
 
-            label1.Visible = true; this.Invalidate();
+            
 
             BitmapW a = new BitmapW(openFileDialog1.FileName);
             pictureBox1.Image = a.GetBitmap();
@@ -48,7 +48,7 @@ namespace filtrr2_port
             res = effects.contrast(res, 10); //apply 10 contrast 
 
             pictureBox2.Image = res.GetBitmap(); //show the resulting image
-            label1.Visible = false;
+            
 
         }
 
@@ -64,17 +64,17 @@ namespace filtrr2_port
         {
             if (openFileDialog1.FileName == "")
             { MessageBox.Show("Select an image first"); return; }
-            label1.Visible = true; this.Invalidate();
+             
             BitmapW a = new BitmapW(openFileDialog1.FileName);
             pictureBox1.Image = a.GetBitmap();
 
             
             BitmapW res = a.Clone(); //this will hold the final result
 
-            res = effects.sepia(res);
+            res = effects.vignette(res, 0, 0, 0);
 
             pictureBox2.Image = res.GetBitmap(); //show the resulting image
-            label1.Visible = false;
+             
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -82,7 +82,7 @@ namespace filtrr2_port
             if (openFileDialog1.FileName == "")
             { MessageBox.Show("Select an image first"); return; }
 
-            label1.Visible = true; this.Invalidate();
+            
             BitmapW a = new BitmapW(openFileDialog1.FileName);
             pictureBox1.Image = a.GetBitmap();
 
@@ -92,20 +92,80 @@ namespace filtrr2_port
             res = effects.blur(res, "gaussian");
 
             pictureBox2.Image = res.GetBitmap(); //show the resulting image
-            label1.Visible = false;
+             
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            label1.Visible = false;
-            this.Invalidate();
-            //a.Activate();
+
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            info a = new info();
-            a.Show();
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.FileName == "")
+            { MessageBox.Show("Select an image first"); return; }
+
+
+            BitmapW a = new BitmapW(openFileDialog1.FileName);
+            pictureBox1.Image = a.GetBitmap(); //show the original image
+
+            //apply effects
+
+            BitmapW res = a.Clone(); //this will hold the final result
+
+            //do some adjustments
+            res = effects.brighten(res, 20);
+            res = effects.saturate(res, -90);
+            
+            //add a purplish color
+            BitmapW purple = a.Clone();
+            purple = effects.fill(purple, 34, 43, 109);
+            res = layers.merge("softLight", res, purple);
+
+            //do some more adjustments
+            res = effects.gamma(res, -5);
+            res = effects.contrast(res, 50);
+            
+
+            pictureBox2.Image = res.GetBitmap(); //show the resulting image
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.FileName == "")
+            { MessageBox.Show("Select an image first"); return; }
+
+
+            BitmapW a = new BitmapW(openFileDialog1.FileName);
+            pictureBox1.Image = a.GetBitmap(); //show the original image
+
+            //apply effects
+
+            BitmapW layer1 = a.Clone(); //working layer 1
+            BitmapW res = a.Clone(); //this will hold the final result
+
+            //do some adjustments
+            res = effects.brighten(res, 10);
+            res = effects.contrast(res, 30);
+            
+            //add a sepia softlight to the image
+            layer1 = res.Clone();
+            layer1 = effects.sepia(layer1);
+            layer1 = effects.vignette(layer1, 0, 0, 0); //some vignette too
+            res = layers.merge("softLight", res, layer1); //add this layer to our image as softlight
+
+            
+
+            //desaturate a little
+            res = effects.saturate(res, -30);
+
+            //tadaaa
+            pictureBox2.Image = res.GetBitmap(); //show the resulting image
         }
     }
 }
