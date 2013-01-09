@@ -56,7 +56,7 @@ namespace filtrr2_port
         }
 
         /// <summary>
-        /// #### Adjust [No Range]
+        /// #### Adjust [-255,255 for each channel]
         /// </summary>
         /// <param name="image"></param>
         /// <param name="pr"></param>
@@ -66,6 +66,7 @@ namespace filtrr2_port
         public BitmapW adjust(BitmapW image, float pr, float pg, float pb)
         {
             float cr = 0, cg = 0, cb = 0;
+            pr /= 100; pg /= 100; pb /= 100;
             int i = 0, j = 0,
             h = image.Height(),
             w = image.Width();
@@ -77,9 +78,15 @@ namespace filtrr2_port
                     Color temp = image.GetPixel(i, j);
                     cr = temp.R; cg = temp.G; cb = temp.B;
 
+                    if (pr > 0) cr += (255 - cr) * pr; else cr -= cr * Math.Abs(pr);
+                    if (pg > 0) cg += (255 - cg) * pg; else cg -= cg * Math.Abs(pg);
+                    if (pb > 0) cb += (255 - cb) * pb; else cb -= cb * Math.Abs(pb);
+                    /*
                     cr *= (1.0f + pr);
                     cg *= (1.0f + pg);
                     cb *= (1.0f + pb);
+                    */
+
 
                     image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
                 }
@@ -139,7 +146,7 @@ namespace filtrr2_port
                     Color temp = image.GetPixel(i, j);
                     cr = temp.R; cg = temp.G; cb = temp.B; ca = temp.A;
 
-                    ca += (p);
+                    ca = (p);
 
                     image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255),
                         (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
@@ -584,5 +591,47 @@ namespace filtrr2_port
             // add 512 for proper rounding
             return ((approx + 512) >> 10);
         }
+
+
+        /// <summary>
+        /// #### Noise [0 - 100]
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="r"></param>
+        /// <param name="g"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public BitmapW noise(BitmapW image, int p)
+        {
+            int adjust = (int)(p * 2.55f);
+            Random rand = new Random(adjust);
+            int temprand = 0;
+
+            float cr = 0, cg = 0, cb = 0, ca;
+            int i = 0, j = 0,
+            h = image.Height(),
+            w = image.Width();
+
+            for (i = 0; i < w; i++)
+            {
+                for (j = 0; j < h; j++)
+                {
+                    Color temp = image.GetPixel(i, j);
+                    cr = temp.R; cg = temp.G; cb = temp.B; ca = temp.A;
+
+                    temprand = rand.Next(adjust * -1, adjust);
+
+                    cr += temprand;
+                    cg += temprand;
+                    cb += temprand;
+
+                    image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255),
+                        (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
+                }
+            }
+            return image;
+        }
+
+        
     }
 }

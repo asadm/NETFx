@@ -167,5 +167,29 @@ namespace filtrr2_port
             //tadaaa
             pictureBox2.Image = res.GetBitmap(); //show the resulting image
         }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.FileName == "")
+            { MessageBox.Show("Select an image first"); return; }
+
+
+            BitmapW a = new BitmapW(openFileDialog1.FileName);
+            pictureBox1.Image = a.GetBitmap(); //show the original image
+
+            //apply effect
+            BitmapW res = a.Clone();
+
+            res = effects.saturate(res, -100); //grayscale it
+            res = effects.contrast(res, 125);
+            res = effects.noise(res, 3);
+            res = effects.sepia(res);
+
+            res = effects.adjust(res, 8, 2, 4);
+            
+
+            //tadaaa
+            pictureBox2.Image = res.GetBitmap(); //show the resulting image
+        }
     }
 }
