@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace filtrr2_port
+namespace netfx
 {
     public class LockBitmap
     {

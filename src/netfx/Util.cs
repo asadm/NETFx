@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 // A Bezier curve implementation.
  */
 
-namespace filtrr2_port
+namespace netfx
 {
     class Util
     {

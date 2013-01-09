@@ -1,4 +1,4 @@
-﻿namespace filtrr2_port
+﻿namespace netfx
 {
     partial class Form1
     {

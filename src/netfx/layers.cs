@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 // There are 7 pre-defined blending modes with which you can
 // blend layers.
 */
-namespace filtrr2_port
+namespace netfx
 {
     class layers
     {

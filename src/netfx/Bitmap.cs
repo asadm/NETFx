@@ -9,7 +9,7 @@ using System.Drawing;
  This is a simple class in this C# implementation but if the code is ported then this would become an important class.
  * 
  */
-namespace filtrr2_port
+namespace netfx
 {
     class BitmapW
     {
