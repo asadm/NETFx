@@ -35,7 +35,7 @@ Following effects have been implemented:
 - Brighten
 - Saturate
 - Gamma
-- Adjust
+- Adjust Channels
 - Expose
 - Curves
 - Sharpen
@@ -47,6 +47,8 @@ Following effects have been implemented:
 - Posterize
 - Invert
 - Alpha
+- Vignette
+- Noise
 
 The library also supports photoshop like layer blending modes:
 - Multiply
@@ -58,9 +60,51 @@ The library also supports photoshop like layer blending modes:
 - Difference
 
 =====================================
+##Using NETFx
 
-Sample code in C#:
--------------------
+**Set Up**
+
+- You need to add five classes (effects.cs,layers.cs,Util.cs,Bitmap.cs,LockBitmap.cs) to your project in order to use NETFx. These classes are based on .NET 4.0 and are independant of any third party library.
+
+- After that, just declare an object of both effects 'class' and 'layers' class:
+
+```c#
+effects effects = new effects(); //contains all the basic effects 
+layers layers = new layers(); //photoshop like layer implementation
+```
+
+- You need to use my wrapper around the .net Bitmap when applying effects, you can use your old bitmap(if you really have to) like this:
+```c#
+Bitmap oldBMP = new Bitmap("megan.jpg"); //this is .NET Bitmap
+BitmapW BetterBitmap = new BitmapW(oldBMP); //copy the old bitmap into this one.
+```
+Otherwise you can do the following too:
+```c#
+BitmapW BetterBitmap = new BitmapW("megan.jpg"); //load from file
+```
+
+**Effects and Layers**
+
+- After you have a bitmap and some objects ready to use, try some effects:
+```c#
+BitmapW a = new BitmapW("D:\megan.jpg"); //load an image
+a = effects.sepia(a); //apply the effect
+pictureBox1.Image = a.GetBitmap(); //show the resulting image
+```
+
+- You can also merge two bitmaps with some blending options(like in photoshop):
+
+```c#
+BitmapW a = new BitmapW("D:\megan.jpg"); //load an image
+BitmapW a = new BitmapW("D:\glow.jpg"); //load another image
+a = layers.merge("softLight",a,b); //merge 'b' onto 'a' as soft light
+pictureBox1.Image = a.GetBitmap(); //show the resulting image
+```
+
+
+
+**Sample code in C#**
+
 ```c#
 effects effects = new effects(); //contains all the basic effects 
 layers layers = new layers(); //photoshop like layer implementation
