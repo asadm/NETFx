@@ -74,11 +74,14 @@ layers layers = new layers(); //photoshop like layer implementation
 ```
 
 - You need to use my wrapper around the .net Bitmap when applying effects, you can use your old bitmap(if you really have to) like this:
+
 ```c#
 Bitmap oldBMP = new Bitmap("megan.jpg"); //this is .NET Bitmap
 BitmapW BetterBitmap = new BitmapW(oldBMP); //copy the old bitmap into this one.
 ```
+
 Otherwise you can do the following too:
+
 ```c#
 BitmapW BetterBitmap = new BitmapW("megan.jpg"); //load from file
 ```
@@ -86,6 +89,7 @@ BitmapW BetterBitmap = new BitmapW("megan.jpg"); //load from file
 **Effects and Layers**
 
 - After you have a bitmap and some objects ready to use, try some effects:
+
 ```c#
 BitmapW a = new BitmapW("D:\megan.jpg"); //load an image
 a = effects.sepia(a); //apply the effect
