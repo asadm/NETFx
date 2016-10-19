@@ -16,7 +16,7 @@ namespace netfx
 
             // int kh = kernel;
             //int kw = kh; //kernel[0].Length / 2;
-            int i = 0, j = 0, n = 0, m = 0, cr, cg, cb,
+            int i = 0, j = 0, n = 0, m = 0, cr, cg, cb, ca,
             h = image.Height(),
             w = image.Width();
 
@@ -25,7 +25,7 @@ namespace netfx
                 for (j = 0; j < w; j++)
                 {
                     //kernel loop
-                    float r = 0, g = 0, b = 0;
+                    float r = 0, g = 0, b = 0, a = 0;
                     for (n = -kh; n <= kh; n++)
                     {
                         for (m = -kw; m <= kw; m++)
@@ -37,18 +37,19 @@ namespace netfx
                                     float f = kernel[m + kw, n + kh];
                                     if (f == 0) { continue; }
                                     Color colortemp = image.GetPixel(j + m, i + n);
-                                    cr = colortemp.R; cg = colortemp.G; cb = colortemp.B;
+                                    cr = colortemp.R; cg = colortemp.G; cb = colortemp.B; ca = colortemp.A;
 
                                     r += cr * f;
                                     g += cg * f;
                                     b += cb * f;
+                                    a += ca * f;
                                 }
                             }
                         }
                     }
                     //kernel loop end
 
-                    temp.SetPixel(j, i, Color.FromArgb(255, (int)Util.clamp(r, 0, 255), (int)Util.clamp(g, 0, 255), (int)Util.clamp(b, 0, 255)));
+                    temp.SetPixel(j, i, Color.FromArgb((int)Util.clamp(a, 0, 255), (int)Util.clamp(r, 0, 255), (int)Util.clamp(g, 0, 255), (int)Util.clamp(b, 0, 255)));
                 }
             }
             return temp;
@@ -62,11 +63,12 @@ namespace netfx
         /// <param name="pr"></param>
         /// <param name="pg"></param>
         /// <param name="pb"></param>
+        /// <param name="pa"></param>
         /// <returns></returns>
-        public BitmapW adjust(BitmapW image, float pr, float pg, float pb)
+        public BitmapW adjust(BitmapW image, float pr, float pg, float pb, float pa)
         {
-            float cr = 0, cg = 0, cb = 0;
-            pr /= 100; pg /= 100; pb /= 100;
+            float cr = 0, cg = 0, cb = 0, ca = 0;
+            pr /= 100; pg /= 100; pb /= 100; pa /= 100;
             int i = 0, j = 0,
             h = image.Height(),
             w = image.Width();
@@ -76,19 +78,21 @@ namespace netfx
                 for (j = 0; j < h; j++)
                 {
                     Color temp = image.GetPixel(i, j);
-                    cr = temp.R; cg = temp.G; cb = temp.B;
+                    cr = temp.R; cg = temp.G; cb = temp.B; ca = temp.A;
 
                     if (pr > 0) cr += (255 - cr) * pr; else cr -= cr * Math.Abs(pr);
                     if (pg > 0) cg += (255 - cg) * pg; else cg -= cg * Math.Abs(pg);
                     if (pb > 0) cb += (255 - cb) * pb; else cb -= cb * Math.Abs(pb);
+                    if (pa > 0) ca += (255 - ca) * pa; else ca -= ca * Math.Abs(pa);
                     /*
                     cr *= (1.0f + pr);
                     cg *= (1.0f + pg);
                     cb *= (1.0f + pb);
+                    ca *= (1.0f + ca);
                     */
 
 
-                    image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
+                    image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
                 }
             }
             return image;
@@ -103,7 +107,7 @@ namespace netfx
         public BitmapW brighten(BitmapW image, float p)
         {
             p = Util.normalize(p, -255, 255, -100, 100);
-            float cr = 0, cg = 0, cb = 0;
+            float cr = 0, cg = 0, cb = 0, ca = 0;
             int i = 0, j = 0,
             h = image.Height(),
             w = image.Width();
@@ -113,13 +117,14 @@ namespace netfx
                 for (j = 0; j < h; j++)
                 {
                     Color temp = image.GetPixel(i, j);
-                    cr = temp.R; cg = temp.G; cb = temp.B;
+                    cr = temp.R; cg = temp.G; cb = temp.B; ca = temp.A;
 
                     cr += (p);
                     cg += (p);
                     cb += (p);
+                    ca += (p);
 
-                    image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
+                    image.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
                 }
             }
             return image;
@@ -134,7 +139,7 @@ namespace netfx
         public BitmapW alpha(BitmapW image, float p)
         {
             p = Util.normalize(p, 0, 255, -100, 100);
-            float cr = 0, cg = 0, cb = 0, ca;
+            float cr = 0, cg = 0, cb = 0, ca =0;
             int i = 0, j = 0,
             h = image.Height(),
             w = image.Width();
