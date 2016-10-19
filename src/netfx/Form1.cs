@@ -185,7 +185,7 @@ namespace netfx
             res = effects.noise(res, 3);
             res = effects.sepia(res);
 
-            res = effects.adjust(res, 8, 2, 4);
+            res = effects.adjust(res, 8, 2, 4, 6);
             
 
             //tadaaa
