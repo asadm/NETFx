@@ -90,7 +90,32 @@ namespace netfx
                 cb = Math.Abs(b.B - t.B);
                 ca = Math.Abs(b.A - t.A);
             }
+           if (fn == "colordodge")
+            {
+               
+                double cr_d, cg_d, cb_d, ca_d;
+                if ((t.R) != 255)
+                    cr_d = ((double)b.R /(255 - t.R))*255 ;
+                else cr_d = 0;
 
+                if ((t.G) != 255)
+                    cg_d = ((double)b.G/(255 - t.G))*255;
+                else cg_d = 0;
+
+                if ((t.B) != 255)
+                    cb_d = ((double)b.B/(255 - t.B))*255;
+                else cb_d = 0;
+
+                if ((t.A) != 255)
+                    ca_d = ((double)b.A/(255 - t.A))*255;
+                else ca_d = 0;
+
+                cr = (int)cr_d;
+                cg = (int)cg_d;
+                cb = (int)cb_d;
+                ca = (int)ca_d;
+
+            }
             return Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255));
 
         }
