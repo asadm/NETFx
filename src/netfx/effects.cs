@@ -9,7 +9,7 @@ namespace netfx
 {
     class effects
     {
-
+        public Blur CustomBlur = new Blur(); //the use in Form1.cs for example: "layer1 = effects.CustomBlur.Gaussain(layer1, 10);"
         BitmapW convolve(BitmapW image, float[,] kernel, int kw, int kh)
         {
             BitmapW temp = image.Clone();
