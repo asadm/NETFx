@@ -33,6 +33,31 @@ namespace netfx
             }
             return bottom;
         }
+        
+       public  BitmapW opacity(int value, BitmapW bottom, BitmapW top) // in Form1.cs for example: "layer3 = layers.opacity(50,layer2, layer1);" *"50" = 50% the value from 0-100
+        {
+            if (value >= 0 && value <= 100)
+            {
+                float percentge =(float)value/100;
+                int i = 0, j = 0,
+             h = Math.Min(bottom.Height(), top.Height()),
+             w = Math.Min(bottom.Width(), top.Width());
+                
+                for (i = 0; i < w; i++)
+                {
+                    for (j = 0; j < h; j++)
+                    {
+                        Color b = bottom.GetPixel(i, j);
+                        Color t = top.GetPixel(i, j);
+                        float cr = 0, cg = 0, cb = 0, ca = 0;
+                        ca = b.A * (1 - percentge) + t.A  * percentge;
+                        cr = b.R * (1 - percentge) + t.R * percentge;
+                        cg = b.G * (1 - percentge) + t.G * percentge;
+                        cb = b.B * (1 - percentge) + t.B * percentge;
+                       
+                        bottom.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
+                    }
+                }
 
         Color func(string fn, Color b, Color t)
         {
@@ -90,7 +115,32 @@ namespace netfx
                 cb = Math.Abs(b.B - t.B);
                 ca = Math.Abs(b.A - t.A);
             }
+           if (fn == "colordodge")
+            {
+               
+                double cr_d, cg_d, cb_d, ca_d;
+                if ((t.R) != 255)
+                    cr_d = ((double)b.R /(255 - t.R))*255 ;
+                else cr_d = 0;
 
+                if ((t.G) != 255)
+                    cg_d = ((double)b.G/(255 - t.G))*255;
+                else cg_d = 0;
+
+                if ((t.B) != 255)
+                    cb_d = ((double)b.B/(255 - t.B))*255;
+                else cb_d = 0;
+
+                if ((t.A) != 255)
+                    ca_d = ((double)b.A/(255 - t.A))*255;
+                else ca_d = 0;
+
+                cr = (int)cr_d;
+                cg = (int)cg_d;
+                cb = (int)cb_d;
+                ca = (int)ca_d;
+
+            }
             return Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255));
 
         }
