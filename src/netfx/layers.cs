@@ -33,16 +33,16 @@ namespace netfx
             }
             return bottom;
         }
-        
-       public  BitmapW opacity(int value, BitmapW bottom, BitmapW top) // in Form1.cs for example: "layer3 = layers.opacity(50,layer2, layer1);" *"50" = 50% the value from 0-100
+
+        public BitmapW opacity(int value, BitmapW bottom, BitmapW top) // in Form1.cs for example: "layer3 = layers.opacity(50,layer2, layer1);" *"50" = 50% the value from 0-100
         {
             if (value >= 0 && value <= 100)
             {
-                float percentge =(float)value/100;
+                float percentge = (float)value / 100;
                 int i = 0, j = 0,
              h = Math.Min(bottom.Height(), top.Height()),
              w = Math.Min(bottom.Width(), top.Width());
-                
+
                 for (i = 0; i < w; i++)
                 {
                     for (j = 0; j < h; j++)
@@ -50,14 +50,17 @@ namespace netfx
                         Color b = bottom.GetPixel(i, j);
                         Color t = top.GetPixel(i, j);
                         float cr = 0, cg = 0, cb = 0, ca = 0;
-                        ca = b.A * (1 - percentge) + t.A  * percentge;
+                        ca = b.A * (1 - percentge) + t.A * percentge;
                         cr = b.R * (1 - percentge) + t.R * percentge;
                         cg = b.G * (1 - percentge) + t.G * percentge;
                         cb = b.B * (1 - percentge) + t.B * percentge;
-                       
+
                         bottom.SetPixel(i, j, Color.FromArgb((int)Util.clamp(ca, 0, 255), (int)Util.clamp(cr, 0, 255), (int)Util.clamp(cg, 0, 255), (int)Util.clamp(cb, 0, 255)));
                     }
                 }
+            }
+            return bottom;
+        }
 
         Color func(string fn, Color b, Color t)
         {
