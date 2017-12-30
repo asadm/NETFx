@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bitmap.cs" />
+    <Compile Include="Blur.cs" />
     <Compile Include="effects.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
